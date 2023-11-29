@@ -15,7 +15,7 @@ from pyTMD import compute_tide_corrections
 
 
 # Define function to prepare data
-def GetFormattedData(location):
+def GetFormattedData(location,SAVE_DATA=False):
 
     start = time.time()
     warnings.filterwarnings("ignore")
@@ -34,7 +34,8 @@ def GetFormattedData(location):
     df_merged = utils.Step13(df_merged, location)
     end = time.time()
     print("Time taken to get the data: ", (end-start)/60, ' mins.')
-    df_merged.to_csv('./final_df_' + str(location) + '.csv')
+    if SAVE_DATA:
+        df_merged.to_csv('./final_df_' + str(location) + '.csv')
     print('Data for ', str(location), 'is saved.')
     return df_merged
 
@@ -44,6 +45,6 @@ def GetFormattedData(location):
 if __name__ == "__main__":
     # Specify the location in the UK
     location = "dover"
-    
+    SAVE_DATA = True
     # Call the prepare_data function with the specified location
     GetFormattedData(location)

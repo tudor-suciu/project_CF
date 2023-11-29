@@ -464,17 +464,17 @@ def Step12(form_df, location):
 def GetFloodsFromLocation(location):
     uk_haigh_meta = pd.read_csv(paths.Haigh_meta_path).drop(['Unnamed: 0','index'],axis=1)
     water_level= pd.read_csv(paths.water_levels_path,skiprows = 2, header =3)
-    location_flood = uk_haigh_meta[uk_haigh_meta['location'] == location]['location_surgewatch'][0]
+    location_flood = uk_haigh_meta[uk_haigh_meta['location'] == location]['location_surgewatch'].iloc[0]
 
     ##### ADD FLOODS DATA TO THE MASSIVE DATAFRAME:
     water_at_location = water_level[water_level['Tide gauge site'] == location_flood]
-    ### get the months and days of the storms:
 
     t_list = []
     for x in water_at_location['Date and time']:
         dt = datetime.datetime.strptime(x,'%d/%m/%Y %H:%M')
         t_list.append(date_to_fractional_years_resample3hrs(dt))
     water_at_location['t'] = t_list
+    water_at_location['t'] = np.round(water_at_location['t'],5)
     return water_at_location
 
 def Step13(final_df, location):
