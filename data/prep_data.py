@@ -39,12 +39,21 @@ def GetFormattedData(location,SAVE_DATA=False):
     print('Data for ', str(location), 'is saved.')
     return df_merged
 
+def get_location():
+    # Check if a command-line argument is provided
+    if len(sys.argv) > 1:
+        return sys.argv[1]
+    else:
+        # Prompt the user for input if no command-line argument is provided
+        return input("Enter the city name: ")
+
 
 
 # Main function
 if __name__ == "__main__":
     # Specify the location in the UK
-    location = "dover"
+    location = get_location()
+    
     SAVE_DATA = True
-    # Call the prepare_data function with the specified location
-    GetFormattedData(location)
+
+    GetFormattedData(location, SAVE_DATA)

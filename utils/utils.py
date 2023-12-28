@@ -9,6 +9,8 @@ import time
 import numpy as np
 from pyTMD import compute_tide_corrections
 import os 
+from shapely.geometry import Point
+import geopandas as gpd
 
 def date_to_fractional_years_resample3hrs(x):
     year = x.year
@@ -441,20 +443,24 @@ def Step12(form_df, location):
         tides['time_ok'] = pd.to_datetime(tides['time'], format = '%Y-%m-%d %H:%M:%S')
         tides = tides[~((tides.time_ok.dt.month == 2) & (tides.time_ok.dt.day == 29))]
         if len(tides) == len(sample_times):
-            form_df['tide'] = tides['tide']
+            tides.drop(columns = ['lat','lon'], inplace = True)
+            form_df = pd.merge(form_df, tides, on = 'time', how = 'inner')
+
         else:
             GetTides(sample_times,location)
             tides = pd.read_csv(tides_file_name)
             tides['time_ok'] = pd.to_datetime(tides['time'], format = '%Y-%m-%d %H:%M:%S')
             tides = tides[~((tides.time_ok.dt.month == 2) & (tides.time_ok.dt.day == 29))]
-            form_df['tide'] = tides['tide']
+            tides.drop(columns = ['lat','lon'], inplace = True)
+            form_df = pd.merge(form_df, tides, on = 'time', how = 'inner')
 
     else:
         GetTides(sample_times,location)
         tides = pd.read_csv(tides_file_name)
         tides['time_ok'] = pd.to_datetime(tides['time'], format = '%Y-%m-%d %H:%M:%S')
         tides = tides[~((tides.time_ok.dt.month == 2) & (tides.time_ok.dt.day == 29))]
-        form_df['tide'] = tides['tide']
+        tides.drop(columns = ['lat','lon'], inplace = True)
+        form_df = pd.merge(form_df, tides, on = 'time', how = 'inner')
 
     
     end = time.time()
@@ -480,12 +486,20 @@ def GetFloodsFromLocation(location):
 def Step13(final_df, location):
     start = time.time()
     water_at_location = GetFloodsFromLocation(location)
+    water_at_location['t'] = np.round(water_at_location['t'],5)
 
     Yx1 = np.zeros([len(final_df)])
     Yx4 = np.zeros([len(final_df)])
 
     for i in range(len(water_at_location)):
-        index_Flood = final_df[final_df['t'] == water_at_location['t'].iloc[i]].index.values
+        to_find = water_at_location['t'].iloc[i]
+        index_Flood = final_df[final_df['t'] == to_find].index.values
+
+        if index_Flood:
+            index_Flood= index_Flood[0]
+        else:
+            continue
+
         Yx4[index_Flood-2] = 1.
         Yx4[index_Flood-1] = 1.
         Yx4[index_Flood] = 1.
@@ -497,3 +511,14 @@ def Step13(final_df, location):
     end = time.time()
     print('Time taken to add floods: ', end-start, 'Step 13/13')
     return final_df
+
+def determine_location(latitude, longitude):
+    point = Point(longitude, latitude)
+    
+    
+    world = gpd.read_file("/Users/tudor/Documents/phd/data/ne_10m_ocean/ne_10m_ocean.shp")  # Replace with the path to the downloaded file
+    for geom in world["geometry"]:
+        if point.within(geom):
+            return False
+    
+    return True
