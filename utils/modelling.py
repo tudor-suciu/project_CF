@@ -138,7 +138,6 @@ def PrepareData():
     df.drop(['time64'],axis=1,inplace=True)
 
     return df
-
 #--------------------------------------------------------------------------------------------------
 
 def FloodChoice(final_df,times1 = False, times4=False):
@@ -154,5 +153,3 @@ def FloodChoice(final_df,times1 = False, times4=False):
         else:
             print('Please choose which column to use as the flood column - times1 or times4')
     return final_df
-
-

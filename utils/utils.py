@@ -35,7 +35,7 @@ def date_to_fractional_years_resample3hrs(x):
             fractional_years = year + (day_in_year-1)/365 + (hour / (24 * days_in_year))
 
     return fractional_years
-
+#--------------------------------------------------------------------------------------------------
 
 def GetCoordinates(location):
     '''
@@ -47,6 +47,7 @@ def GetCoordinates(location):
     lat = df[df['location'] == location]['latitude'].values[0]
     lon = df[df['location'] == location]['longitude'].values[0]
     return lat, lon
+#--------------------------------------------------------------------------------------------------
 
 def ExtractFloods(location):
     '''
@@ -79,6 +80,7 @@ def ExtractFloods(location):
     water['t'] = t_list
 
     return water
+#--------------------------------------------------------------------------------------------------
 
 def ExtractWindow(data,geo_coord_tuple,data_type = 'CMIP6'):
     """
@@ -125,6 +127,7 @@ def ExtractWindow(data,geo_coord_tuple,data_type = 'CMIP6'):
         print('data_type not recognized.')
 
     return data
+#--------------------------------------------------------------------------------------------------
 
 def compute_ref_mean(ref_ds):
     '''
@@ -137,6 +140,7 @@ def compute_ref_mean(ref_ds):
         means[i] = np.mean(month_ref.sp)
         stds[i] = np.std(month_ref.sp)
     return means, stds
+#--------------------------------------------------------------------------------------------------
 
 def geo_coord_borders_1GRID(lat, lon, Dataset_type):
     """
@@ -188,6 +192,7 @@ def geo_coord_borders_1GRID(lat, lon, Dataset_type):
         print("Error: Something is wrong with the Longitude.")
 
     return ((lat_lw_bord,lat_up_bord),(lon_lw_bord,lon_up_bord))
+#--------------------------------------------------------------------------------------------------
 
 def GetGeoBorders(lat,lon):
     lat_lw = lat - 3.125
@@ -195,6 +200,7 @@ def GetGeoBorders(lat,lon):
     lon_lw = lon - 3.125
     lon_up = lon + 3.125
     return ((lat_lw,lat_up),(lon_lw,lon_up))
+#--------------------------------------------------------------------------------------------------
 
 def Step1():
     # open datasets:
@@ -207,6 +213,7 @@ def Step1():
     end = time.time()
     print("Time taken to open datasets: ", end-start, ' ; Step 1/13')
     return ps_data, u_data, v_data, t_data, pr_data
+#--------------------------------------------------------------------------------------------------
 
 def Step2(ps_data, u_data, v_data, t_data, pr_data):
     start = time.time()
@@ -219,6 +226,7 @@ def Step2(ps_data, u_data, v_data, t_data, pr_data):
     end = time.time()
     print("Time taken to remove leap years: ", end-start, ' ; Step 2/13')
     return ps_data, u_data, v_data, t_data, pr_data
+#--------------------------------------------------------------------------------------------------
 
 def Step3(ps_data, u_data, v_data, t_data, pr_data, location):
     start = time.time()
@@ -234,6 +242,7 @@ def Step3(ps_data, u_data, v_data, t_data, pr_data, location):
     end = time.time()
     print("Time taken to extract window: ", end-start, ' ; Step 3/13')
     return ps_window, u_window, v_window, t_window, pr_window
+#--------------------------------------------------------------------------------------------------
 
 def Step4(ps_window, u_window, v_window, t_window, pr_window):
     start = time.time()
@@ -246,6 +255,7 @@ def Step4(ps_window, u_window, v_window, t_window, pr_window):
     end = time.time()
     print("Time taken to convert to dataframe: ", end-start, ' ; Step 4/13')
     return df_ps, df_u, df_v, df_t, df_pr
+#--------------------------------------------------------------------------------------------------
 
 def Step5(df_ps, df_u, df_v, df_t, df_pr):
     start = time.time()
@@ -257,6 +267,7 @@ def Step5(df_ps, df_u, df_v, df_t, df_pr):
     end = time.time()
     print("Time taken to convert to fractional years: ", end-start, ' ; Step 5/13')
     return df_ps, df_u, df_v, df_t, df_pr
+#--------------------------------------------------------------------------------------------------
 
 def Step6(df_ps, df_u, df_v, df_t, df_pr):
     start = time.time()
@@ -268,6 +279,7 @@ def Step6(df_ps, df_u, df_v, df_t, df_pr):
     end = time.time()
     print("Time taken to drop time column: ", end-start, ' ; Step 6/13')
     return df_ps, df_u, df_v, df_t, df_pr
+#--------------------------------------------------------------------------------------------------
 
 def Step7(df_ps, df_u, df_v, df_t, df_pr):
     start = time.time()
@@ -278,6 +290,7 @@ def Step7(df_ps, df_u, df_v, df_t, df_pr):
     end = time.time()
     print("Time taken to merge dataframes: ", end-start, ' ; Step 7/13')
     return df_merged
+#--------------------------------------------------------------------------------------------------
 
 def Step8(df_merged):
     start = time.time()
@@ -307,6 +320,7 @@ def Step8(df_merged):
     end = time.time()
     print("Time taken to create the grid-cell-wise features: ", end-start, ' ; Step 8/13')
     return final_df
+#--------------------------------------------------------------------------------------------------
 
 def CalculateNAO():
 
@@ -350,6 +364,7 @@ def CalculateNAO():
 
     NAO_ERA5 = pd.DataFrame({'nao':rey_data_pd.ps - azo_data_pd.ps, 'time': azo_data_pd.time})
     return NAO_ERA5
+#--------------------------------------------------------------------------------------------------
 
 def Step9(form_df):
     start = time.time()
@@ -364,6 +379,7 @@ def Step9(form_df):
     end = time.time()
     print('Time taken to calculate vertical vorticity: ', end-start, ' ; Step 9/13')
     return form_df
+#--------------------------------------------------------------------------------------------------
 
 def Step10(form_df):
     start = time.time()
@@ -380,6 +396,7 @@ def Step10(form_df):
     end = time.time()
     print('Time taken to calculate cumulative precipitation: ', end-start, ' ; Step 10/13')
     return form_df
+#--------------------------------------------------------------------------------------------------
 
 def Step11(form_df):
     # Merge NAO data:
@@ -407,6 +424,7 @@ def Step11(form_df):
     end = time.time()
     print('Time taken to add NAO data: ', end-start, ' ; Step 11/13')
     return form_df
+#--------------------------------------------------------------------------------------------------
 
 def GetTides(sample_times, location):
     lat, lon = GetCoordinates(location)
@@ -432,6 +450,7 @@ def GetTides(sample_times, location):
     point_df
     point_df.to_csv('./tides_'+str(location)+'.csv')
     return
+#--------------------------------------------------------------------------------------------------
     
 def Step12(form_df, location):
     start = time.time()
@@ -466,6 +485,7 @@ def Step12(form_df, location):
     end = time.time()
     print('Time taken to add tides: ', end-start, ' ; Step 12/13')
     return form_df
+#--------------------------------------------------------------------------------------------------
 
 def GetFloodsFromLocation(location):
     uk_haigh_meta = pd.read_csv(paths.Haigh_meta_path).drop(['Unnamed: 0','index'],axis=1)
@@ -482,6 +502,7 @@ def GetFloodsFromLocation(location):
     water_at_location['t'] = t_list
     water_at_location['t'] = np.round(water_at_location['t'],5)
     return water_at_location
+#--------------------------------------------------------------------------------------------------
 
 def Step13(final_df, location):
     start = time.time()
@@ -511,6 +532,7 @@ def Step13(final_df, location):
     end = time.time()
     print('Time taken to add floods: ', end-start, 'Step 13/13')
     return final_df
+#--------------------------------------------------------------------------------------------------
 
 def determine_location(latitude, longitude):
     point = Point(longitude, latitude)
@@ -522,3 +544,182 @@ def determine_location(latitude, longitude):
             return False
     
     return True
+#--------------------------------------------------------------------------------------------------
+
+def Add_SquareCube_cols(df):
+    '''
+    This function adds the square and cube of the u, v, 
+    and the square for the P and T columns.
+    ---
+    Input:
+        df (pd.DataFrame): the dataframe
+    Output:
+        df (pd.DataFrame): the dataframe with the new columns
+    '''
+    for i in range(25):
+        for j in range(25):
+            u_Nonsquare_col = 'u_' + str(i+1) + '_' + str(j+1)
+            u_square_col = 'u2_' + str(i+1) + '_' + str(j+1)
+            v_Nonsquare_col = 'v_' + str(i+1) + '_' + str(j+1)
+            v_square_col = 'v2_' + str(i+1) + '_' + str(j+1)
+            u_cube_col = 'u3_' + str(i+1) + '_' + str(j+1)
+            v_cube_col = 'v3_' + str(i+1) + '_' + str(j+1)
+
+            df[u_square_col] = df[u_Nonsquare_col]**2
+            df[v_square_col] = df[v_Nonsquare_col]**2
+            df[u_cube_col] = df[u_Nonsquare_col]**3
+            df[v_cube_col] = df[v_Nonsquare_col]**3
+
+            p_Nonsquare_col = 'P_' + str(i+1) + '_' + str(j+1)
+            p_square_col = 'P2_' + str(i+1) + '_' + str(j+1)
+            t_Nonsquare_col = 'T_' + str(i+1) + '_' + str(j+1)
+            t_square_col = 'T2_' + str(i+1) + '_' + str(j+1)
+
+            df[p_square_col] = df[p_Nonsquare_col]**2
+            df[t_square_col] = df[t_Nonsquare_col]**2
+    return df
+#--------------------------------------------------------------------------------------------------
+
+def Prepare_PhysicalVar_Dfs(df):
+    '''
+    Creates dataframes for each physical variable, with the columns being the individual cells;
+    This is used to then get statistics for each phyiscal variable
+    for the whole area/ sea+land areas.
+    ---
+    Input:
+        df (pd.DataFrame): dataframe
+    Output:
+        pressure, pressure2, temperature, temperature2 (pd.DataFrame)
+        u_wind, v_wind, u2_wind, v2_wind, u3_wind, v3_wind (pd.DataFrame)
+        precipitation, pr_cum3, pr_cum5, vort, air_density (pd.DataFrame)
+    '''
+    all_cells = []
+    for x in np.arange(1,26):
+        for y in np.arange(1,26):
+            all_cells.append((x,y))
+
+    vort_cells = []
+    for x in np.arange(1,25):
+        for y in np.arange(1,25):
+            vort_cells.append((x+.5,y+.5))
+
+    pressure_list = []
+    pressure2_list = []
+    temperature_list = []
+    temperature2_list = []
+    u_wind_list = []
+    v_wind_list = []
+    u2_wind_list = []
+    v2_wind_list = []
+    u3_wind_list = []
+    v3_wind_list = []
+    precipitation_list = []
+    pr_cum3_list = []
+    pr_cum5_list = []
+    for x in all_cells:
+        pressure_list.append('P_'+str(x[0])+'_'+str(x[1]))
+        pressure2_list.append('P2_'+str(x[0])+'_'+str(x[1]))
+        temperature_list.append('T_'+str(x[0])+'_'+str(x[1]))
+        temperature2_list.append('T2_'+str(x[0])+'_'+str(x[1]))
+        u_wind_list.append('u_'+str(x[0])+'_'+str(x[1]))
+        v_wind_list.append('v_'+str(x[0])+'_'+str(x[1]))
+        u2_wind_list.append('u2_'+str(x[0])+'_'+str(x[1]))
+        v2_wind_list.append('v2_'+str(x[0])+'_'+str(x[1]))
+        u3_wind_list.append('u3_'+str(x[0])+'_'+str(x[1]))
+        v3_wind_list.append('v3_'+str(x[0])+'_'+str(x[1]))
+        precipitation_list.append('pr_'+str(x[0])+'_'+str(x[1]))
+        pr_cum3_list.append('pr_cum3_'+str(x[0])+'_'+str(x[1]))
+        pr_cum5_list.append('pr_cum5_'+str(x[0])+'_'+str(x[1]))
+
+
+    pressure = df[pressure_list]
+    pressure2 = df[pressure2_list]
+    temperature = df[temperature_list]
+    temperature2 = df[temperature2_list]
+    u_wind = df[u_wind_list]
+    v_wind = df[v_wind_list]
+    u2_wind = df[u2_wind_list]
+    v2_wind = df[v2_wind_list]
+    u3_wind = df[u3_wind_list]
+    v3_wind = df[v3_wind_list]
+    precipitation = df[precipitation_list]
+    pr_cum3 = df[pr_cum3_list]
+    pr_cum5 = df[pr_cum5_list]
+
+    vort_list = []
+    for x in vort_cells:
+        vort_list.append('vort_'+str(x[0])+'_'+str(x[1]))
+
+    vort = df[vort_list]
+
+
+    air_density = pressure.copy()
+    for i in range(air_density.shape[1]):
+        air_density.iloc[:,i] = temperature.iloc[:,i]/pressure.iloc[:,i]
+    
+    dfs_dict = {
+        'pressure': pressure,
+        'pressure2': pressure2,
+        'temperature': temperature,
+        'temperature2': temperature2,
+        'u_wind': u_wind,
+        'v_wind': v_wind,
+        'u2_wind': u2_wind,
+        'v2_wind': v2_wind,
+        'u3_wind': u3_wind,
+        'v3_wind': v3_wind,
+        'precipitation': precipitation,
+        'pr_cum3': pr_cum3,
+        'pr_cum5': pr_cum5,
+        'vort': vort,
+        'air_density': air_density
+    }
+    return dfs_dict
+#--------------------------------------------------------------------------------------------------
+
+
+def Make_PhyVars_Stats_Choices(df,phys_dict, choice_1d_dict, phys_choice_dict, stat_dict):
+    '''
+    Function that makes the choices of physical variables and statistics to be included 
+    in the new dataframe, that is subject to further analysis.
+    ---
+    Inputs:
+        df (pd.DataFrame): dataframe
+        phys_dict (dict): dictionary of physical variables dataframes
+        choice_1d_dict (dict): dictionary of 1d choice variables
+        phys_choice_dict (dict): dictionary of physical variables choices
+        stat_dict (dict): dictionary of statistics choices
+    Outputs:
+        df_new (pd.DataFrame): dataframe with chosen physical variables and statistics
+    '''
+    df_new = df[[key for key, value in choice_1d_dict.items() if value == 1]]
+    chosen_phys = [key for key, value in phys_choice_dict.items() if value == 1]
+    chosen_stat = [key for key, value in stat_dict.items() if value == 1]
+
+    for phys in chosen_phys:
+        for stat in chosen_stat:
+            if stat == 'mean':
+                df_new[phys + '_' + stat] = phys_dict[phys].mean(axis = 1)
+            elif stat == 'min':
+                df_new[phys + '_' + stat] = phys_dict[phys].min(axis = 1)
+            elif stat == 'max':
+                df_new[phys + '_' + stat] = phys_dict[phys].max(axis = 1)
+            elif stat == 'std':
+                df_new[phys + '_' + stat] = phys_dict[phys].std(axis = 1)
+            elif stat == 'skew':
+                df_new[phys + '_' + stat] = phys_dict[phys].skew(axis = 1)
+            elif stat == 'kurtosis':
+                df_new[phys + '_' + stat] = phys_dict[phys].kurtosis(axis = 1)
+            elif stat == '1st_perc':
+                df_new[phys + '_' + stat] = phys_dict[phys].quantile(0.01, axis = 1)
+            elif stat == '99th_perc':
+                df_new[phys + '_' + stat] = phys_dict[phys].quantile(0.99, axis = 1)
+            elif stat == '10th_perc':
+                df_new[phys + '_' + stat] = phys_dict[phys].quantile(0.1, axis = 1)
+            elif stat == '90th_perc':
+                df_new[phys + '_' + stat] = phys_dict[phys].quantile(0.9, axis = 1)
+            else:
+                print('Wrong stat name -- ERROR.')
+
+    return df_new
+
