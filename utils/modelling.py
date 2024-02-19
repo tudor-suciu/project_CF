@@ -90,6 +90,19 @@ def customMetric(y_true, y_pred):
     FPR = fp / (fp + tn)
     custom = recall * balanced_accuracy * (specificity - FPR)
     return custom
+#--------------------------------------------------------------------------------------------------
+def customMetric_adj(y_true, y_pred):
+    tp = sum((y_true == 1) & (y_pred == 1))
+    fp = sum((y_true == 0) & (y_pred == 1))
+    tn = sum((y_true == 0) & (y_pred == 0))
+    fn = sum((y_true == 1) & (y_pred == 0))
+    
+    recall = tp / (tp + fn)
+    balanced_accuracy = (tp / (tp + fn) + tn / (tn + fp)) / 2
+    specificity = tn / (tn + fp)
+    FPR = fp / (fp + tn)
+    custom = (recall**(1/3)) * (balanced_accuracy**(1/3)) * ((specificity - FPR)**(1/3))
+    return custom
 
 #--------------------------------------------------------------------------------------------------
 def customMetric_estimator(estimator, X, y_true):
@@ -106,6 +119,20 @@ def customMetric_estimator(estimator, X, y_true):
     custom = recall * balanced_accuracy * (specificity - FPR)
     return custom
 #--------------------------------------------------------------------------------------------------
+def customMetric_estimator_adj(estimator, X, y_true):
+    y_pred = estimator.predict(X)
+    tp = sum((y_true == 1) & (y_pred == 1))
+    fp = sum((y_true == 0) & (y_pred == 1))
+    tn = sum((y_true == 0) & (y_pred == 0))
+    fn = sum((y_true == 1) & (y_pred == 0))
+    
+    recall = tp / (tp + fn)
+    balanced_accuracy = (tp / (tp + fn) + tn / (tn + fp)) / 2
+    specificity = tn / (tn + fp)
+    FPR = fp / (fp + tn)
+    custom = (recall**(1/3)) * (balanced_accuracy**(1/3)) * ((specificity - FPR)**(1/3))
+    return custom
+#--------------------------------------------------------------------------------------------------
 
 def PrintModelOutput(y_test, y_pred):
 
@@ -117,7 +144,8 @@ def PrintModelOutput(y_test, y_pred):
     print("        Precision: ", metrics.precision_score(y_test, y_pred))
     print("           Recall: ", metrics.recall_score(y_test, y_pred))
     print("         F1 Score: ", metrics.f1_score(y_test, y_pred))
-    print(" my Custom Metric: ", customMetric(y_test, y_pred))
+    print("    ROC AUC Score: ", metrics.roc_auc_score(y_test, y_pred))
+    print(" my Custom Metric: ", customMetric_adj(y_test, y_pred))
     print("------------------------------------------")
 
 #--------------------------------------------------------------------------------------------------
@@ -153,3 +181,4 @@ def FloodChoice(final_df,times1 = False, times4=False):
         else:
             print('Please choose which column to use as the flood column - times1 or times4')
     return final_df
+#--------------------------------------------------------------------------------------------------

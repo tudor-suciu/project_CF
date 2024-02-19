@@ -1,0 +1,67 @@
+Preparing the data...
+Starting the loop...
+All PhysVars, 4.1.2.2
+
+Fitting 4 folds for each of 4 candidates, totalling 16 fits
+Best parameters found:
+{'C': 10.0}
+
+
+Classification report:
+21449, 
+1891, 
+0, 
+20, 
+0.959490145672665, 
+0.9594901456726649, 
+0.9298681439276596 
+
+
+                        coeff     exp_coeff
+v2_wind_mean         7.881985  2.649126e+05
+u2_wind_mean         6.759408  8.621321e+04
+nao                  5.194246  1.802323e+04
+pr_cum5_std          3.673486  3.938898e+03
+vort_mean            2.174110  8.794358e+02
+pr_cum5_min          1.497167  4.469009e+02
+u2_wind_min          1.426978  4.166089e+02
+tide                 0.504825  1.656696e+02
+u_wind_std           0.271184  1.311516e+02
+pressure_std         0.050845  1.052159e+02
+precipitation_max    0.000000  1.000000e+02
+air_density_min      0.000000  1.000000e+02
+v2_wind_max          0.000000  1.000000e+02
+precipitation_std    0.000000  1.000000e+02
+precipitation_min    0.000000  1.000000e+02
+vort_max             0.000000  1.000000e+02
+vort_min             0.000000  1.000000e+02
+pr_cum5_mean         0.000000  1.000000e+02
+air_density_std      0.000000  1.000000e+02
+v2_wind_min          0.000000  1.000000e+02
+pr_cum5_max          0.000000  1.000000e+02
+air_density_mean     0.000000  1.000000e+02
+vort_std             0.000000  1.000000e+02
+pr_cum3_std          0.000000  1.000000e+02
+v2_wind_std          0.000000  1.000000e+02
+u2_wind_max          0.000000  1.000000e+02
+u_wind_mean          0.000000  1.000000e+02
+pressure_mean        0.000000  1.000000e+02
+pressure_min         0.000000  1.000000e+02
+temperature_min      0.000000  1.000000e+02
+temperature_max      0.000000  1.000000e+02
+u_wind_max           0.000000  1.000000e+02
+v_wind_std           0.000000  1.000000e+02
+v_wind_min           0.000000  1.000000e+02
+v_wind_max           0.000000  1.000000e+02
+u2_wind_std          0.000000  1.000000e+02
+air_density_max      0.000000  1.000000e+02
+temperature_mean    -1.219263  2.954478e+01
+u_wind_min          -1.278154  2.785510e+01
+pr_cum3_max         -1.553749  2.114537e+01
+pr_cum3_mean        -2.093100  1.233043e+01
+v_wind_mean         -2.223995  1.081761e+01
+pr_cum3_min         -2.430623  8.798196e+00
+precipitation_mean  -4.529495  1.078612e+00
+temperature_std     -7.523497  5.402399e-02
+pressure_max       -18.904276  6.165625e-07
+time elapsed: 3174.80s

@@ -1,0 +1,9 @@
+Preparing the data...
+Starting the loop...
+All PhysVars, 4.1.2.2
+
+Fitting 4 folds for each of 1 candidates, totalling 4 fits
+Best parameters found:
+{'C': 100.0}
+
+

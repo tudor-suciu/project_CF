@@ -723,3 +723,114 @@ def Make_PhyVars_Stats_Choices(df,phys_dict, choice_1d_dict, phys_choice_dict, s
 
     return df_new
 
+#--------------------------------------------------------------------------------------------------
+
+
+def GetChoiceDicts(choice_str_1,choice_str_2,choice_str_3,choice_str_4,choice_str_5,choice_str_6):
+    '''
+    '''
+    choice_1d_dict = {
+        'flood': int(str(choice_str_1)[1]),
+        'tide' : int(str(choice_str_1)[2]),
+        'nao' : int(str(choice_str_1)[3])
+    }
+    phys_choice_dict = {
+        'pressure': int(str(choice_str_2)[1]),
+        'pressure2': int(str(choice_str_2)[2]),
+        'temperature': int(str(choice_str_2)[3]),
+        'temperature2': int(str(choice_str_2)[4]),
+        'u_wind': int(str(choice_str_3)[1]),
+        'v_wind': int(str(choice_str_3)[2]),
+        'u2_wind': int(str(choice_str_3)[3]),
+        'v2_wind': int(str(choice_str_3)[4]),
+        'u3_wind': int(str(choice_str_3)[5]),
+        'v3_wind': int(str(choice_str_3)[6]),
+        'precipitation': int(str(choice_str_4)[1]),
+        'pr_cum3': int(str(choice_str_4)[2]),
+        'pr_cum5': int(str(choice_str_4)[3]),
+        'vort': int(str(choice_str_4)[4]),
+        'air_density': int(str(choice_str_4)[5])
+    }
+    stat_dict = {
+        'mean': int(str(choice_str_5)[1]),
+        'std': int(str(choice_str_5)[2]),
+        'min': int(str(choice_str_5)[3]),
+        'max': int(str(choice_str_5)[4]),
+        'skew': int(str(choice_str_5)[5]),
+        'kurtosis': int(str(choice_str_5)[6]),
+        '1st_perc': int(str(choice_str_6)[1]),
+        '99th_perc': int(str(choice_str_6)[2]),
+        '10th_perc': int(str(choice_str_6)[3]),
+        '90th_perc': int(str(choice_str_6)[4])
+    }
+
+    return choice_1d_dict, phys_choice_dict, stat_dict
+#--------------------------------------------------------------------------------------------------
+
+def GetString_PhysAndStats(choice_str_1,choice_str_2,choice_str_3,choice_str_4,choice_str_5,choice_str_6):
+    str1 = 'Phys: '
+    if str(choice_str_1)[1] == '1':
+        str1 += 'flood; '
+    if str(choice_str_1)[2] == '1':
+        str1 += 'tide; '
+    if str(choice_str_1)[3] == '1':
+        str1 += 'nao; '
+    
+    if str(choice_str_2)[1] == '1':
+        str1 += 'P; '
+    if str(choice_str_2)[2] == '1':
+        str1 += 'P2; '
+    if str(choice_str_2)[3] == '1':
+        str1 += 'T; '
+    if str(choice_str_2)[4] == '1':
+        str1 += 'T2; '
+
+    if str(choice_str_3)[1] == '1':
+        str1 += 'u; '
+    if str(choice_str_3)[2] == '1':
+        str1 += 'v; '
+    if str(choice_str_3)[3] == '1':
+        str1 += 'u2; '
+    if str(choice_str_3)[4] == '1':
+        str1 += 'v2; '
+    if str(choice_str_3)[5] == '1':
+        str1 += 'u3; '
+    if str(choice_str_3)[6] == '1':
+        str1 += 'v3; '
+
+    if str(choice_str_4)[1] == '1':
+        str1 += 'pr; '
+    if str(choice_str_4)[2] == '1':
+        str1 += 'pr_cum3; '
+    if str(choice_str_4)[3] == '1':
+        str1 += 'pr_cum5; '
+    if str(choice_str_4)[4] == '1':
+        str1 += 'vort; '
+    if str(choice_str_4)[5] == '1':
+        str1 += 'air_density; '
+
+    str2 = 'Stats: '
+
+    if str(choice_str_5)[1] == '1':
+        str2 += 'mean; '
+    if str(choice_str_5)[2] == '1':
+        str2 += 'std; '
+    if str(choice_str_5)[3] == '1':
+        str2 += 'min; '
+    if str(choice_str_5)[4] == '1':
+        str2 += 'max; '
+    if str(choice_str_5)[5] == '1':
+        str2 += 'skew; '
+    if str(choice_str_5)[6] == '1':
+        str2 += 'kurtosis; '
+
+    if str(choice_str_6)[1] == '1':
+        str2 += '1st_perc; '
+    if str(choice_str_6)[2] == '1':
+        str2 += '99th_perc; '
+    if str(choice_str_6)[3] == '1':
+        str2 += '10th_perc; '
+    if str(choice_str_6)[4] == '1':
+        str2 += '90th_perc; '
+    
+    return str1, str2
