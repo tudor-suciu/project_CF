@@ -7,7 +7,7 @@ import datetime
 import xarray as xr
 import time
 import numpy as np
-from pyTMD import compute_tide_corrections
+import pyTMD
 import os 
 from shapely.geometry import Point
 import geopandas as gpd
@@ -435,9 +435,9 @@ def GetTides(sample_times, location):
     # Add tides. Tides need to be calculated.
     print('Estimated time taken: ',.75*len(sample_times)/8/365,' mins.')
 
-    out_drift = compute_tide_corrections(
-        x=np.round(point_df.lon),
-        y=np.round(point_df.lat),
+    out_drift = pyTMD.compute_tide_corrections(
+        x=point_df.lon.iloc[0],
+        y=point_df.lat.iloc[0],
         delta_time=point_df.time.values,
         DIRECTORY= paths.FES_tide_data,
         MODEL="FES2014",
@@ -445,9 +445,11 @@ def GetTides(sample_times, location):
         TYPE="drift",
         TIME="datetime",
         METHOD="bilinear",
+        EXTRAPOLATE=True,
     )
     point_df['tide'] = out_drift
-    point_df
+    # point_df
+    time.sleep(3)
     point_df.to_csv('./tides_'+str(location)+'.csv')
     return
 #--------------------------------------------------------------------------------------------------

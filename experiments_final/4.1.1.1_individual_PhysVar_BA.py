@@ -66,9 +66,9 @@ grid_search = GridSearchCV(estimator=logreg,
 choices_4_1_1 = pd.read_csv('4.1.2.choice_str.csv')
 N = len(choices_4_1_1)
 
-log_file = "4.1.1.1_log.txt"
+log_file = "outputs/4.1.1.1_log.txt"
 with open(log_file, "w") as file:
-    file.write('iteration, phys_vars, stats, best_params, tn, fp, fn, tp, BA, AUC, custom \n')
+    file.write('iteration, phys_vars, stats, best_params, tn, fp, fn, tp, BA, AUC, custom,JAC ,Centropy \n')
     for i in tqdm(range(len(choices_4_1_1))):
     
         choice_str_1 = choices_4_1_1.iloc[i]['choice_str_1']
@@ -90,7 +90,12 @@ with open(log_file, "w") as file:
         scaler = MinMaxScaler()
         X_scaled = scaler.fit_transform(X)
 
-        grid_search.fit(X_scaled, y)
+        X_train = X_scaled[:int(len(X_scaled)*.8),:]
+        y_train = y.iloc[:int(len(X_scaled)*.8):]
+        X_test = X_scaled[int(len(X_scaled)*.8):,:] 
+        y_test = y.iloc[int(len(X_scaled)*.8):]
+
+        grid_search.fit(X_train, y_train)
         
         best_params = grid_search.best_params_
         for param, value in best_params.items():
@@ -105,10 +110,6 @@ with open(log_file, "w") as file:
                             tol=1e-6,
                             multi_class='ovr')
 
-        X_train = X_scaled[:int(len(X_scaled)*.8),:]
-        y_train = y.iloc[:int(len(X_scaled)*.8):]
-        X_test = X_scaled[int(len(X_scaled)*.8):,:]
-        y_test = y.iloc[int(len(X_scaled)*.8):]
         y_pred = logreg.fit(X_train, y_train).predict(X_test)
 
         # file.write("Classification Metrics:, ")
@@ -118,7 +119,10 @@ with open(log_file, "w") as file:
         file.write(str(confusion_matrix(y_test, y_pred)[1,1])+", ")
         file.write(str(metrics.balanced_accuracy_score(y_test, y_pred))+", ")
         file.write(str(metrics.roc_auc_score(y_test, y_pred))+", ")
-        file.write(str(mod.customMetric_adj(y_test, y_pred))+" ")
+        file.write(str(mod.customMetric_adj(y_test, y_pred))+", ")
+        file.write(str(metrics.jaccard_score(y_test,y_pred))+", ")
+        file.write(str(metrics.log_loss(y_test,y_pred))+" ")
+
         file.write("\n")
 file.close()
 

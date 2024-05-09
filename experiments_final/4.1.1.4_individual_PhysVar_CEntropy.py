@@ -54,9 +54,9 @@ param_grid = {'C': [1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3]}
 grid_search = GridSearchCV(estimator=logreg, 
                     param_grid=param_grid, 
                     # scoring = 'balanced_accuracy',
-                    scoring = 'jaccard',
+                    # scoring = 'jaccard',
                     # scoring = 'roc_auc',
-                    # scoring = mod.customMetric_estimator_adj,
+                    scoring = 'neg_log_loss',
                     cv=cv, 
                     verbose=1, 
                     n_jobs=6,
@@ -66,7 +66,7 @@ grid_search = GridSearchCV(estimator=logreg,
 choices_4_1_1 = pd.read_csv('4.1.2.choice_str.csv')
 N = len(choices_4_1_1)
 
-log_file = "outputs/4.1.1.2_log.txt"
+log_file = "outputs/4.1.1.4_log.txt"
 with open(log_file, "w") as file:
     file.write('iteration, phys_vars, stats, best_params, tn, fp, fn, tp, BA, AUC, custom,JAC ,Centropy \n')
     for i in tqdm(range(len(choices_4_1_1))):
@@ -92,7 +92,7 @@ with open(log_file, "w") as file:
 
         X_train = X_scaled[:int(len(X_scaled)*.8),:]
         y_train = y.iloc[:int(len(X_scaled)*.8):]
-        X_test = X_scaled[int(len(X_scaled)*.8):,:]
+        X_test = X_scaled[int(len(X_scaled)*.8):,:] 
         y_test = y.iloc[int(len(X_scaled)*.8):]
 
         grid_search.fit(X_train, y_train)
@@ -104,7 +104,7 @@ with open(log_file, "w") as file:
         logreg = LogisticRegression(class_weight = weights,
                             penalty='l1',
                             solver='liblinear',
-                            max_iter=1000,
+                            max_iter=5000,
                             C = best_params['C'],
                             fit_intercept=True,
                             tol=1e-6,
