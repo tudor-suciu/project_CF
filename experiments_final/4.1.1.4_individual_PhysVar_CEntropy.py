@@ -38,7 +38,7 @@ print('Starting the loop...')
 ### Experiment LogReg, GridSearch and parameters:
 
 logreg = LogisticRegression(class_weight = weights,
-                            penalty='l1',
+                            penalty='l2',
                             solver='liblinear',
                             max_iter=1000,
                             fit_intercept=True,
@@ -68,7 +68,7 @@ N = len(choices_4_1_1)
 
 log_file = "outputs/4.1.1.4_log.txt"
 with open(log_file, "w") as file:
-    file.write('iteration, phys_vars, stats, best_params, tn, fp, fn, tp, BA, AUC, custom,JAC ,Centropy \n')
+    file.write('iteration, phys_vars, stats, best_params, tn, fp, fn, tp, BA, AUC, custom,JAC ,Centropy, coeffs, exp_coeffs \n')
     for i in tqdm(range(len(choices_4_1_1))):
     
         choice_str_1 = choices_4_1_1.iloc[i]['choice_str_1']
@@ -102,7 +102,7 @@ with open(log_file, "w") as file:
             file.write(f"{param}: {value}"+',  ')
 
         logreg = LogisticRegression(class_weight = weights,
-                            penalty='l1',
+                            penalty='l2',
                             solver='liblinear',
                             max_iter=5000,
                             C = best_params['C'],
@@ -121,7 +121,16 @@ with open(log_file, "w") as file:
         file.write(str(metrics.roc_auc_score(y_test, y_pred))+", ")
         file.write(str(mod.customMetric_adj(y_test, y_pred))+", ")
         file.write(str(metrics.jaccard_score(y_test,y_pred))+", ")
-        file.write(str(metrics.log_loss(y_test,y_pred))+" ")
+        file.write(str(metrics.log_loss(y_test,y_pred))+", ")
+        
+        coeffs = pd.DataFrame({'coeff': logreg.coef_[0]}, 
+                    index=X.columns)
+        coeffs['exp_coeff'] = np.exp(coeffs['coeff'])*100
+        coeffs = coeffs.sort_values(by = 'exp_coeff', ascending = False)
+
+        file.write(str(coeffs.coeff.values)+ ", ")
+        file.write(str(coeffs.exp_coeff.values)+ " ")
+        
         file.write("\n")
 file.close()
 

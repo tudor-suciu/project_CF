@@ -173,10 +173,10 @@ def FloodChoice(final_df,times1 = False, times4=False):
         print('You cannot choose both - please make sure you only choose one value to be true.')
     else:
         if times1 == True:
-            final_df.drop('floods_x4',axis = 1, inplace = True)
+            final_df.drop('floods_x4', axis = 1, inplace = True)
             final_df.rename(columns={'floods': 'flood'}, inplace=True)
         elif times4 == True:
-            final_df.drop('floods',axis = 1, inplace = True)
+            final_df.drop('floods', axis = 1, inplace = True)
             final_df.rename(columns={'floods_x4': 'flood'}, inplace=True)
         else:
             print('Please choose which column to use as the flood column - times1 or times4')
