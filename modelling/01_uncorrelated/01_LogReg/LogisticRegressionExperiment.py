@@ -1,3 +1,4 @@
+import resource
 import pandas as pd
 import numpy as np
 import sys
@@ -16,7 +17,8 @@ from sklearn.model_selection import KFold, cross_validate
 with open("LogReg.yaml", "r") as file:
     sweep_config = yaml.safe_load(file)
 
-df = pd.read_csv('/Users/tudor/Documents/phd/coding/project_CF/data/final_df_aberdeen.csv')
+# df = pd.read_csv('/Users/tudor/Documents/phd/coding/project_CF/data/final_df_aberdeen.csv') # LAPTOP
+df = pd.read_csv('/gws/nopw/j04/ai4er/users/ts809/era5_final/final_df_aberdeen.csv')    # JASMIN
 
 def train():
     weights = mod.CalcClassWeights(df['floods'])
@@ -32,7 +34,9 @@ def train():
     y_train = y.iloc[0:int(len(y) *.8)]
     y_test = y.iloc[int(len(y) *.8):int(len(y) *.9)]
     y_val = y.iloc[int(len(y) *.9):]
-    
+
+    del df_to_analyse
+
     wandb.init()
     config = wandb.config
     
@@ -100,3 +104,5 @@ def train():
 
 if __name__ == '__main__':
     train()
+    max_memory = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024 / 1024
+    print(f"Maximum memory used: {max_memory:.2f} MB")

@@ -1,5 +1,6 @@
 project: logreg-hyperparameter-tuning
 entity: ts809_lab
+tag: ['JASMIN']
 program: LogisticRegressionExperiment.py
 method: grid
 metric: 
