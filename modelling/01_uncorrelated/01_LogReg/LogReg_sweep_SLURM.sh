@@ -3,7 +3,7 @@
 #SBATCH --job-name=wandb_sweep_ts809
 #SBATCH --output=wandb/slurm_logs/sweep_%j.out
 #SBATCH --error=wandb/slurm_logs/sweep_%j.err
-#SBATCH --time=20:00
+#SBATCH --time=4:00:00
 #SBATCH --ntasks=4
 #SBATCH --mem=48G
 
@@ -12,4 +12,4 @@
 conda activate /home/users/ts809/miniconda3/envs/project_CF
 
 # wandb agent <entity>/<project>/<sweep_id>
-wandb agent --count 1 ts809_lab/logreg-hyperparameter-tuning/txshuqe7
+wandb agent --count 1 ts809_lab/logreg-hyperparameter-tuning/np437h7v
