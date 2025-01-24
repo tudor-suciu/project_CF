@@ -6,20 +6,15 @@ import time
 sys.path.append('../../../')
 from utils import modelling as mod
 import wandb
+import yaml
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import KFold, cross_validate
 
-# Define wandb sweep configuration
-sweep_config = {
-    'method': 'grid',
-    'metric': {'name': 'balanced_accuracy', 'goal': 'maximize'},
-    'parameters': {
-        'C': {'values': [0.001, 0.01]},
-        'scaler': {'values': ['standard', 'minmax']},
-    }
-}
+# Load the config.yaml file
+with open("LogReg.yaml", "r") as file:
+    sweep_config = yaml.safe_load(file)
 
 df = pd.read_csv('/Users/tudor/Documents/phd/coding/project_CF/data/final_df_aberdeen.csv')
 
@@ -39,8 +34,9 @@ def train():
     y_val = y.iloc[int(len(y) *.9):]
     
     wandb.init()
+    config = wandb.config
     
-    if wandb.config.scaler == 'standard':
+    if config.scaler == 'standard':
         scaler = StandardScaler()
     else:
         scaler = MinMaxScaler()
@@ -61,7 +57,7 @@ def train():
 
     start = time.time()
     # Train Logistic Regression with current C
-    logreg.C = wandb.config.C
+    logreg.C = config.C
     cv_scores = cross_validate(logreg, X_train, y_train, cv=cv, 
                             scoring=('balanced_accuracy', 'jaccard', 'roc_auc_ovr', 'neg_log_loss'),
                             n_jobs=4,
@@ -100,5 +96,7 @@ def train():
         })
     
 # sweep_id = wandb.sweep(sweep_config, project="logreg-hyperparameter-tuning")
+# wandb.agent(sweep_id = 'kpo15hg1', function=train, count=4, project="logreg-hyperparameter-tuning")
 
-wandb.agent(sweep_id = 'kpo15hg1', function=train, count=4, project="logreg-hyperparameter-tuning")
+if __name__ == '__main__':
+    train()

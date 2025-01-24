@@ -1,0 +1,12 @@
+project: logreg-hyperparameter-tuning
+entity: ts809_lab
+program: LogisticRegressionExperiment.py
+method: grid
+metric: 
+  name: 'balanced_accuracy'
+  goal: 'maximize'
+parameters:
+  C:
+    values: [0.001, 0.01]
+  scaler:
+    values: ['standard', 'minmax']
