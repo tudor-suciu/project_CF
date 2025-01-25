@@ -1,0 +1,22 @@
+project: dectree-hyperparameter-tuning
+entity: ts809_lab
+program: DecisionTreeExperiment.py
+method: grid
+metric: 
+  name: 'balanced_accuracy'
+  goal: 'maximize'
+parameters:
+  scaler:
+    values: ['standard', 'minmax']
+  criterion: 
+    values: ['gini', 'entropy', 'log_loss']
+  splitter: 
+    values: ['best', 'random']
+  max_depth: 
+    values: [None, 500, 2000]
+  min_samples_split:
+    values: [2, 20, 50]
+  min_samples_leaf:
+    values: [1, 20, 50]
+  max_features:
+    values: ['sqrt', 'log2']
