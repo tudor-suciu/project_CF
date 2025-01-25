@@ -1,4 +1,4 @@
-project: dectree-hyperparameter-tuning
+project: Project_CF
 entity: ts809_lab
 program: DecisionTreeExperiment.py
 method: grid

@@ -13,10 +13,11 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import KFold, cross_validate
 
 # Load the config.yaml file
-with open("LogReg.yaml", "r") as file:
+with open("DecTree.yaml", "r") as file:
     sweep_config = yaml.safe_load(file)
 
-df = pd.read_csv('/Users/tudor/Documents/phd/coding/project_CF/data/final_df_aberdeen.csv')
+# df = pd.read_csv('/Users/tudor/Documents/phd/coding/project_CF/data/final_df_aberdeen.csv')
+df = pd.read_csv('/gws/nopw/j04/ai4er/users/ts809/era5_final/final_df_aberdeen.csv')    # JASMIN
 
 def train():
     weights = mod.CalcClassWeights(df['floods'])
