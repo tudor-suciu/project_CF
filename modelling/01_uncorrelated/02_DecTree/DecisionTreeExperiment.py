@@ -54,7 +54,8 @@ def train():
 
     dectree.criterion = config.criterion
     dectree.splitter = config.splitter
-    dectree.max_depth = config.max_depth
+    if config.max_depth != 'None':
+        dectree.max_depth = config.max_depth
     dectree.min_samples_split = config.min_samples_split
     dectree.min_samples_leaf = config.min_samples_leaf
     dectree.max_features = config.max_features
@@ -66,6 +67,7 @@ def train():
     cv_scores = cross_validate(dectree, X_train, y_train, cv=cv, 
                             scoring=('balanced_accuracy', 'jaccard', 'roc_auc_ovr', 'neg_log_loss'),
                             n_jobs=4,
+                            error_score='raise',
     )   
     print(cv_scores.keys())
     interm = time.time()

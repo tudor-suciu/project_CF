@@ -13,7 +13,7 @@ parameters:
   splitter: 
     values: ['best', 'random']
   max_depth: 
-    values: [None, 500, 2000]
+    values: ['None', 500, 2000]
   min_samples_split:
     values: [2, 20, 50]
   min_samples_leaf:

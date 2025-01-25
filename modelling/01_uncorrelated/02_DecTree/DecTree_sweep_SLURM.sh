@@ -12,4 +12,4 @@
 conda activate /home/users/ts809/miniconda3/envs/project_CF
 
 # wandb agent <entity>/<project>/<sweep_id>
-wandb agent --count 60 ts809_lab/Project_CF/atwzeuwz
+wandb agent --count 60 ts809_lab/Project_CF/zqpzfw9h
