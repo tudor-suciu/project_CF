@@ -9,7 +9,7 @@ import wandb
 import yaml
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import KFold, cross_validate
 from sklearn.metrics import balanced_accuracy_score
 
@@ -57,7 +57,7 @@ def train():
         n_jobs=4,
     )
     
-    if randfor.max_depth != 'None':
+    if config.max_depth != 'None':
         randfor.max_depth = config.max_depth
     randfor.min_samples_split = config.min_samples_split
     randfor.min_samples_leaf = config.min_samples_leaf
@@ -68,7 +68,7 @@ def train():
 
     start = time.time()
 
-    cv_scores = cross_validate(dectree, X_train, y_train, cv=cv, 
+    cv_scores = cross_validate(randfor, X_train, y_train, cv=cv, 
                             scoring=('balanced_accuracy', 'jaccard', 'roc_auc_ovr', 'neg_log_loss'),
                             n_jobs=4,
                             error_score='raise',
@@ -81,11 +81,11 @@ def train():
     AUC_score = cv_scores['test_roc_auc_ovr'].mean()
     CE_score = cv_scores['test_neg_log_loss'].mean()
 
-    dectree.fit(X_train, y_train)
+    randfor.fit(X_train, y_train)
 
     # Evaluate on the validation fold
-    y_pred = dectree.predict(X_test)
-    y_prob = dectree.predict_proba(X_test)
+    y_pred = randfor.predict(X_test)
+    y_prob = randfor.predict_proba(X_test)
     stop = time.time()
 
     BA_test = balanced_accuracy_score(y_test, y_pred)
