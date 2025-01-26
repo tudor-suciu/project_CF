@@ -1,0 +1,20 @@
+project: ProjectCF_RandFor
+entity: ts809_lab
+program: RandomForestExperiment.py
+method: grid
+metric: 
+  name: 'balanced_accuracy'
+  goal: 'maximize'
+parameters:
+  scaler:
+    values: ['standard']
+  max_depth: 
+    values: ['None', 500, 2000]
+  min_samples_split:
+    values: [2, 20, 50]
+  min_samples_leaf:
+    values: [1, 20, 50]
+  n_estimators: 
+    values: [200, 500, 1000, 2000]
+  bootstrap:
+    values: [True, False]
