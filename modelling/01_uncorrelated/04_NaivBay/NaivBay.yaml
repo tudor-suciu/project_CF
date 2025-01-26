@@ -1,0 +1,14 @@
+project: ProjectCF_NaivBay
+entity: ts809_lab
+program: NaiveBayesExperiment.py
+method: grid
+metric: 
+  name: 'balanced_accuracy'
+  goal: 'maximize'
+parameters:
+  model:
+    values: ['multinomialNB', 'complementNB', 'complementNB_norm_True']
+  alpha:
+    values: [0.001, 0.01, 0.1, 1, 10, 100, 1000]
+  fit_prior:
+    values: [True, False]
