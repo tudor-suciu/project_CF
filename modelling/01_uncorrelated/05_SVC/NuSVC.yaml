@@ -1,6 +1,6 @@
-project: ProjectCF_SVC
+project: ProjectCF_NuSVC
 entity: ts809_lab
-program: SVCExperiment.py
+program: NuSVCExperiment.py
 method: grid
 metric: 
   name: 'balanced_accuracy'
@@ -8,10 +8,15 @@ metric:
 parameters:
   scaler:
     values: ['standard', 'minmax']
-  penalty:
-    values: ['l1', 'l2']
-  C:
-    values: [0.01, 0.1, 1, 10, 100]
+  nu:
+    values: [0.2, 0.5, 0.8]
+  kernel:
+    values: ['linear', 'rbf', 'poly', 'sigmoid']
+  degree:
+    values: [3,5,10]
+  coef0:
+    values: [0,1]
+  
 
 
   

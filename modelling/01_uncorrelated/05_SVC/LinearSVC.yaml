@@ -1,6 +1,6 @@
-project: ProjectCF_SVC
+project: ProjectCF_LinearSVC
 entity: ts809_lab
-program: SVCExperiment.py
+program: LinearSVCExperiment.py
 method: grid
 metric: 
   name: 'balanced_accuracy'

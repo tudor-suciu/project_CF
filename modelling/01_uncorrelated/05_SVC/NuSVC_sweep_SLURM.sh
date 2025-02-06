@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH -p par-single
-#SBATCH --job-name=wandb_sweep_ts809
+#SBATCH --job-name=Nu_wandb_sweep_ts809
 #SBATCH --output=wandb/slurm_logs/sweep_%j.out
 #SBATCH --error=wandb/slurm_logs/sweep_%j.err
-#SBATCH --time=02:00:00
+#SBATCH --time=06:00:00
 #SBATCH --ntasks=16
 #SBATCH --mem=64G
 
@@ -12,4 +12,4 @@
 conda activate /home/users/ts809/miniconda3/envs/project_CF
 
 # wandb agent <entity>/<project>/<sweep_id>
-wandb agent --count 4 ts809_lab/ProjectCF_LinearSVC/1xm3qei9
+wandb agent --count 12 ts809_lab/ProjectCF_NuSVC/bs5o7g1z

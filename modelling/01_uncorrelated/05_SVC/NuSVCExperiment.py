@@ -9,12 +9,12 @@ import wandb
 import yaml
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.svm import LinearSVC
+from sklearn.svm import NuSVC
 from sklearn.model_selection import KFold, cross_validate
 from sklearn.metrics import balanced_accuracy_score
 
 # Load the config.yaml file
-with open("LinearSVC.yaml", "r") as file:
+with open("NuSVC.yaml", "r") as file:
     sweep_config = yaml.safe_load(file)
 
 # df = pd.read_csv('/Users/tudor/Documents/phd/coding/project_CF/data/final_df_aberdeen.csv')
@@ -48,20 +48,19 @@ def train():
     X_test = scaler.transform(X_test)
     X_val = scaler.transform(X_val)
 
-    svc = LinearSVC(
-        loss='squared_hinge',
-        dual='auto',
+    svc = NuSVC(
+        probability=True,
         tol= 0.0001,
-        fit_intercept = True,
-        intercept_scaling= 1,
         class_weight=weights,
         verbose= 1,
         random_state=42,
         max_iter= 10000,
     )
 
-    svc.penalty = config.penalty
-    svc.C = config.C
+    svc.kernel = config.kernel
+    svc.nu = config.nu
+    svc.degree = config.degree
+    svc.coef0 = config.coef0
 
     cv = KFold(n_splits = 4, shuffle=False)
 
