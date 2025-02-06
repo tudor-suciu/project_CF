@@ -1,0 +1,17 @@
+project: ProjectCF_SVC
+entity: ts809_lab
+program: SVCExperiment.py
+method: grid
+metric: 
+  name: 'balanced_accuracy'
+  goal: 'maximize'
+parameters:
+  scaler:
+    values: ['standard', 'minmax']
+  penalty:
+    values: ['l1', 'l2']
+  C:
+    values: [0.01, 0.1, 1, 10, 100]
+
+
+  
